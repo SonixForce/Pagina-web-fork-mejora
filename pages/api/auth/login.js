@@ -1,6 +1,7 @@
 import { connectToDatabase } from '../../../utils/db'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { serialize } from 'cookie';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_dev'
 

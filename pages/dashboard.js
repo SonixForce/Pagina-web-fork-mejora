@@ -6,6 +6,7 @@ export default function Dashboard() {
   const [books, setBooks] = useState([])
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
+  const [error, setError] = useState('');
   const router = useRouter()
 
   useEffect(() => {
@@ -19,6 +20,9 @@ export default function Dashboard() {
 
   async function addBook(e) {
     e.preventDefault()
+    setError('')
+
+    try{
     const token = localStorage.getItem('token')
     const res = await fetch('/api/books', {
       method: 'POST',
@@ -33,8 +37,15 @@ export default function Dashboard() {
       alert('No autorizado o error')
     }
   }
+  catch{
+    setError("Fallo al registrar libro")
+  }
+  }
 
   async function delBook(id) {
+    setError('')
+
+    try{
     const token = localStorage.getItem('token')
     if (!confirm('Eliminar libro?')) return
     const res = await fetch('/api/books/' + id, {
@@ -42,6 +53,10 @@ export default function Dashboard() {
       headers: { Authorization: 'Bearer ' + token }
     })
     if (res.ok) setBooks(prev=>prev.filter(b=>b._id !== id))
+    }
+    catch{
+      setError("Fallo al eliminar libro")
+    }
   }
 
   return (
